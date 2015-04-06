@@ -1,39 +1,18 @@
 #include "list.h"
+#include "listAllegro.h"
 
 /**FUNCAO PRINCIPAL*/
 int main()
 {
-    Lst *list = init();
-    //char nameFile[] = "lista.txt";
+    /**INICIALIZA LISTA**/
+    LGEN *list = initList();
+    addRec(&list,2,2,7,8,122,12,22,1);
+    addRec(&list,5,9,37,81,0,12,255,3);
+    addCir(&list,0,0,24,255,255,0,1);
+    addRec(&list,12,24,7,8,122,12,22,1);
 
-    //printf("Tamanho do elemento: %d\n", sizeof(list));
+    printListGen(list);
 
-    insertOrder(&list,61);
-    insertOrder(&list,27);
-    insertOrder(&list,123);
-    insertOrder(&list,43);
-    insertOrder(&list,25);
-    insertOrder(&list,6);
-    insertOrder(&list,7);
-    insertOrder(&list,3);
-    insertOrder(&list,4);
-    insertOrder(&list,5);
-
-    printList(list);
-
-    printRecursive(list);
-
-    /**Inserir dados a partir de um arquivo**/
-    //list = leArquivo(nameFile, list);
-    //imprime(list);
-    /**Buscar valor**/
-    // printf("Valor Pesquisado: 18\tPosicao: %p\n",searchList(list,18));
-    /**Remover valor do array**/
-    //removeList(list,121);
-    //printList(list);
-    /**Inserir ordenado**/
-    //insertOrder();
-
-    freeMemory(list);
+    freeMemoryRec(list);
     return 0;
 }

@@ -6,12 +6,13 @@
 
 typedef struct lst Lst;
 
+/**DEFINICAO DAS ESTRUTURAS**/
 struct lst{
     int info;
     Lst *next;
 };
 
-/**DEFINICAO DAS FUNCOES*/
+/**DEFINICAO DAS FUNCOES LISTA DE DADOS**/
 Lst* init (void);
 Lst* insertList(int data, Lst* lst);
 Lst* fileReader(char fileName[], Lst* lst);

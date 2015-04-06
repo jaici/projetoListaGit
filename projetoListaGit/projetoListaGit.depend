@@ -1,0 +1,19 @@
+# depslib dependency file v1.0
+1427714212 source:c:\users\jaici\documents\github\projetolistagit\projetolistagit\list.c
+	"list.h"
+
+1427716514 c:\users\jaici\documents\github\projetolistagit\projetolistagit\list.h
+	<stdio.h>
+	<stdlib.h>
+
+1428359094 source:c:\users\jaici\documents\github\projetolistagit\projetolistagit\main.c
+	"list.h"
+	"listAllegro.h"
+
+1428355999 source:c:\users\jaici\documents\github\projetolistagit\projetolistagit\listallegro.c
+	"listAllegro.h"
+
+1428359168 c:\users\jaici\documents\github\projetolistagit\projetolistagit\listallegro.h
+	<stdio.h>
+	<stdlib.h>
+
