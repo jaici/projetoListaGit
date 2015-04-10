@@ -4,6 +4,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <allegro5\allegro.h>
+#include <allegro5\allegro_primitives.h>
 
 #define RET 0
 #define TRI 1
@@ -14,10 +16,9 @@ typedef struct rectangle REC;
 typedef struct circle CIRC;
 typedef struct listGen LGEN;
 
-enum{
-    ret, cir
-};
+enum{ret, cir};
 
+enum{contornoRedondo, contorno, preenchimentoRedondo, preenchimento};
 /**DEFINICAO DAS ESTRUTURAS LISTA ALLEGRO**/
 struct background{
     float r,g,b;
@@ -47,5 +48,6 @@ void printListGen(LGEN* lst);
 LGEN* initList (void);
 void addRec(LGEN** lst, float x1,float y1, float x2, float y2, float r,float g, float b, float thicknes);
 void addCir(LGEN** lst, float x1,float y1, float raio, float r,float g, float b, float thicknes);
-
+void calcArea(LGEN* lst);
+void desenha(LGEN* lst, char padrao);
 #endif // LISTALLEGRO_H_INCLUDED

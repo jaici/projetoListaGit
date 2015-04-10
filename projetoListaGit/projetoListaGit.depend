@@ -6,14 +6,16 @@
 	<stdio.h>
 	<stdlib.h>
 
-1428359094 source:c:\users\jaici\documents\github\projetolistagit\projetolistagit\main.c
+1428629448 source:c:\users\jaici\documents\github\projetolistagit\projetolistagit\main.c
 	"list.h"
 	"listAllegro.h"
 
-1428355999 source:c:\users\jaici\documents\github\projetolistagit\projetolistagit\listallegro.c
+1428616567 source:c:\users\jaici\documents\github\projetolistagit\projetolistagit\listallegro.c
 	"listAllegro.h"
 
-1428359168 c:\users\jaici\documents\github\projetolistagit\projetolistagit\listallegro.h
+1428629432 c:\users\jaici\documents\github\projetolistagit\projetolistagit\listallegro.h
 	<stdio.h>
 	<stdlib.h>
+	<allegro5\allegro.h>
+	<allegro5\allegro_primitives.h>
 

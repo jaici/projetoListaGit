@@ -42,9 +42,11 @@ void printListGen(LGEN* lst)
         i++;
         switch(aux->tipo){
         case ret:
+            r = aux->info;
             printf("I: %d \tP1(%03.0f,%03.0f)\tP2(%03.0f,%03.0f)\tCor(%03.0f,%03.0f,%03.0f)\n", i, r->x1,r->y1,r->x2,r->y2, r->color.r, r->color.g,r->color.b);
             break;
         case cir:
+            c = aux->info;
             printf("I: %d \tP1(%03.0f,%03.0f)\tRaio:%03.0f\tCor(%03.0f,%03.0f,%03.0f)\n", i, c->x1,c->y1,c->raio, c->color.r, c->color.g,c->color.b);
             break;
         default:
@@ -108,4 +110,59 @@ void addCir(LGEN** lst, float x1,float y1, float raio, float r,float g, float b,
     newList->tipo = cir;
     newList->next = *lst;
     *lst = newList;
+}
+
+/********************************************************************************
+* @Author      : Jaicimara Weber
+* @Date        : 06/04/2015
+* @Description : Calcula area de cada elemento da lista
+* @Parameters  : LGEN* lst, ponto, raio, cor e tamanho da borda
+********************************************************************************/
+void calcArea(LGEN* lst)
+{
+
+}
+/********************************************************************************
+* @Author      : Jaicimara Weber
+* @Date        : 06/04/2015
+* @Description : Calcula area de cada elemento da lista
+* @Parameters  : LGEN* lst, ponto, raio, cor e tamanho da borda
+********************************************************************************/
+void desenha(LGEN* lst, char padrao)
+{
+    LGEN* aux = lst;
+    REC *r = (REC*) aux->info;
+    CIRC *c = (CIRC*) aux->info;
+    int i=0;
+    printf("----------------------------------------------------------\n");
+    while(aux != NULL){
+        i++;
+        al_init_primitives_addon();
+        switch(aux->tipo){
+        case ret:
+            r = aux->info;
+            if(padrao == contornoRedondo){
+                al_draw_rectangle(r->x1, r->y1, r->x2,r->y2, al_map_rgb(r->color.r,r->color.g, r->color.b), r->thicknes);
+            }else if(padrao == contorno){
+                al_draw_rounded_rectangle(r->x1, r->y1, r->x2,r->y2,3,3, al_map_rgb(r->color.r,r->color.g, r->color.b), r->thicknes);
+            }else if(padrao == preenchimentoRedondo){
+                al_draw_filled_rounded_rectangle(r->x1, r->y1, r->x2,r->y2,3,3, al_map_rgb(r->color.r,r->color.g, r->color.b));
+            }else{
+                al_draw_filled_rectangle(r->x1, r->y1, r->x2,r->y2,al_map_rgb(r->color.r,r->color.g, r->color.b));
+            }
+            break;
+        case cir:
+            c = aux->info;
+            if(padrao == contornoRedondo || padrao == contorno){
+                al_draw_circle(c->x1, c->y1, c->raio, al_map_rgb(c->color.r,c->color.g, c->color.b), c->thicknes);
+            }else{
+                al_draw_filled_circle(c->x1, c->y1, c->raio,al_map_rgb(c->color.r,c->color.g, c->color.b));
+            }
+            break;
+        default:
+            printf("\n\nERRO - Tipo não Identificado.\n\n");
+            break;
+        }
+        aux = aux->next;
+    }
 }
