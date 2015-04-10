@@ -173,3 +173,96 @@ void printRecursive(Lst* lst)
     printf("\nINFO: %d",lst->info);
     printRecursive(lst->next);
 }
+//------------------------------------------------------------------------------
+// LISTAS DUPLAMENTE ENCADEADAS
+//------------------------------------------------------------------------------
+/********************************************************************************
+* @Author      : Jaicimara Weber
+* @Date        : 10/04/2015
+* @Description : Insere dado na lista dupla
+* @Parameters  : DL** dl, int data
+********************************************************************************/
+void insertDuoList(DL** dl, int data)
+{
+    DL* newList = (DL*) malloc(sizeof(DL));
+    if(newList == NULL) exit(EXIT_FAILURE); /** Retorna msg caso de falha **/
+    newList->info = data;
+    newList->next = (*dl);
+    newList->prev = NULL;
+    /** verifica se lista não está vazia **/
+    if ((*dl) != NULL)
+        (*dl)->prev= newList;
+
+   (*dl) = newList;
+}
+/********************************************************************************
+* @Author      : Jaicimara Weber
+* @Date        : 10/04/2015
+* @Description : Busca dado na lista dupla
+* @Parameters  : DL** dl, int data
+********************************************************************************/
+DL* searchDuoList(DL* dl, int data)
+{
+    DL* aux;
+    for(aux = dl;aux!=NULL; aux==aux->next){
+        if(aux->info == data)
+            return dl;
+    }
+    return NULL;
+}
+/********************************************************************************
+* @Author      : Jaicimara Weber
+* @Date        : 10/04/2015
+* @Description : Remove dado na lista dupla
+* @Parameters  : DL** dl, int data
+********************************************************************************/
+void removeDuoList(DL** dl, int data)
+{
+    DL* aux = searchDuoList(*dl, data);
+    if (aux == NULL)
+        printf("\nDado não encontrado, elemento não removido.\n");
+        /* não achou o elemento: retorna lista inalterada */
+
+    /* retira elemento do encadeamento */
+    if (*dl == aux)
+        *dl = aux->next;
+    else
+        aux->prev->next = aux->next;
+
+    if (aux->next != NULL)
+        aux->next->prev = aux->prev;
+    *dl = aux;
+    freeMemoryDuoList(aux);
+}
+/********************************************************************************
+* @Author      : Jaicimara Weber
+* @Date        : 10/04/2015
+* @Description : Imprimir dado da lista dupla
+* @Parameters  : DL* dl
+********************************************************************************/
+void printDuoList(DL* dl)
+{
+    DL* aux = dl;
+    int i=0;
+    printf("---------------------------\n");
+    while(aux != NULL){
+        i++;
+        printf("Indice: %d \tEnd: %p Dado: %3d \tAnt: %p\tProx: %p\n", i, aux, aux->info, aux->prev,aux->next);
+        aux = aux->next;
+    }
+}
+/********************************************************************************
+* @Author      : Jaicimara Weber
+* @Date        : 10/04/2015
+* @Description : Imprimir dado da lista dupla
+* @Parameters  : DL* dl
+********************************************************************************/
+void freeMemoryDuoList(DL* dl)
+{
+    DL* aux = dl;
+    while(aux!=NULL){
+        DL* temp = aux->next;   /** GUARDA REFERENCIA PARA O PROXIMO BLOCO **/
+        free(aux);              /** LIBERA MEMORIA DESTA LISTA             **/
+        aux = temp;             /** FAZ COM QUE P APONTE PARA O PROXIMO    **/
+    }
+}
