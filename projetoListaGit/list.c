@@ -203,10 +203,11 @@ void insertDuoList(DL** dl, int data)
 ********************************************************************************/
 DL* searchDuoList(DL* dl, int data)
 {
-    DL* aux;
-    for(aux = dl;aux!=NULL; aux==aux->next){
-        if(aux->info == data)
-            return dl;
+    DL* aux = NULL;
+    for(aux = dl; aux!=NULL; aux = aux->next){
+        if(aux->info == data){
+            return aux;
+        }
     }
     return NULL;
 }
@@ -219,20 +220,21 @@ DL* searchDuoList(DL* dl, int data)
 void removeDuoList(DL** dl, int data)
 {
     DL* aux = searchDuoList(*dl, data);
+    DL* aux2 = *dl;
     if (aux == NULL)
         printf("\nDado não encontrado, elemento não removido.\n");
         /* não achou o elemento: retorna lista inalterada */
 
     /* retira elemento do encadeamento */
-    if (*dl == aux)
-        *dl = aux->next;
+    if (aux2 == aux)
+        aux2 = aux->next;
     else
         aux->prev->next = aux->next;
 
     if (aux->next != NULL)
         aux->next->prev = aux->prev;
-    *dl = aux;
-    freeMemoryDuoList(aux);
+   // freeMemoryDuoList(aux);
+    *dl = aux2;
 }
 /********************************************************************************
 * @Author      : Jaicimara Weber
@@ -245,6 +247,10 @@ void printDuoList(DL* dl)
     DL* aux = dl;
     int i=0;
     printf("---------------------------\n");
+
+    if(aux == NULL){
+        printf("\nLista Vazia\n");
+    }
     while(aux != NULL){
         i++;
         printf("Indice: %d \tEnd: %p Dado: %3d \tAnt: %p\tProx: %p\n", i, aux, aux->info, aux->prev,aux->next);

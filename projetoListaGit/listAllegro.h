@@ -4,8 +4,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <allegro5\allegro.h>
-#include <allegro5\allegro_primitives.h>
+#include <allegro5/allegro.h>
+#include <allegro5/allegro_primitives.h>
 
 #define RET 0
 #define TRI 1

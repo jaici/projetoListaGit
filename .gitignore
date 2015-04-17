@@ -1,3 +1,6 @@
 projetoListaGit/obj/Debug/main.o
 projetoListaGit/obj/Debug/list.o
 projetoListaGit/bin/Debug/projetoListaGit.exe
+*.depend
+projetoListaGit/projetoListaGit.layout
+*.o
