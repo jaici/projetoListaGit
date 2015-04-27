@@ -4,7 +4,7 @@
 * @Author      : Jaicimara Weber
 * @Date        : 16/03/2015
 * @Description : Inicializa Lista
-* @Return      : NULL
+* @Return      : Lst*
 ********************************************************************************/
 Lst* init (void)
 {
@@ -25,7 +25,7 @@ Lst* insertList(int data, Lst* lst)
     newLst->info = data;
     newLst->next = lst;
     return newLst;
-    /** O retorno ira quebrar a licagao do primeiro ponteiro com
+    /** O retorno ira quebrar a ligacao do primeiro ponteiro com
         o NULL pois irá armazenar o endereço do dado inserido.**/
 }
 /********************************************************************************
@@ -37,8 +37,8 @@ Lst* insertList(int data, Lst* lst)
 ********************************************************************************/
 Lst* fileReader(char fileName[], Lst* lst)
 {
-    FILE *fp = fopen(fileName,"r");
     int data = 0;
+    FILE *fp = fopen(fileName,"r");
 
     if(fp == NULL){
        printf("ERRO ao abrir arquivo.");
@@ -60,14 +60,18 @@ Lst* fileReader(char fileName[], Lst* lst)
 ********************************************************************************/
 void insertList2(Lst** lst, int data)
 {
-    *lst = insertList(data, *lst);
+    Lst* newLst = (Lst*) malloc(sizeof(Lst));
+    if(newLst == NULL) exit(EXIT_FAILURE); /** Retorna msg caso de falha **/
+    newLst->info = data;
+    newLst->next = (*lst);
+    (*lst) = newLst;
 }
 /********************************************************************************
 * @Author      : Jaicimara Weber
 * @Date        : 20/03/2015
 * @Description : Busca um dado na lista, retorna seu endereço
 * @Parameters  : Lista* lst, int valor
-* @Return      : Lista*
+* @Return      : Lista* lst ou Null caso nao encontrado elemento
 ********************************************************************************/
 Lst* searchList(Lst* lst, int data)
 {
@@ -101,26 +105,30 @@ void printList(Lst* lst)
 * @Author      : Jaicimara Weber
 * @Date        : 21/03/2015
 * @Description : remover e liberar a memoria do ponteiro da lista encontrada
-* @Parameters  : Lista*
+* @Parameters  : Lista*, int data
 ********************************************************************************/
 void removeList(Lst* lst, int data)
 {
-    Lst* aux;
+    Lst* aux = lst;
     Lst* prev;
 
-    for(aux=lst;aux!= NULL;aux=aux->next){
-        if(aux->info == data){
-           prev->next = aux->next;
-           break;
-        }
-        prev = aux; // lista anterior
+    while (aux!= NULL && aux->info != data){
+         prev = aux;
+         aux  = aux->next;
     }
-    lst = prev;
+    /** SE NAO ENCONTROU O ELEMENTO A REMOVER, LISTA CONTINUA COMPLETA **/
+    if(prev == NULL)
+        lst = aux->next;
+    else
+        prev->next = aux->next;   /** SE ENCONTROU O ELEMENTO A REMOVER,
+                                      ELEMENTO ANTERIOR APONTA PARA O PROXIMO ELEMENTO DO ENCONTRADO **/
+
+    free(aux); /** LIBERA MEMÓRIA **/
 }
 /********************************************************************************
 * @Author      : Jaicimara Weber
 * @Date        : 16/03/2015
-* @Description : Libera espaço da memória ocuplado pela lista
+* @Description : Libera espaço da memória ocupado pela lista
 * @Parameters  : Lista* lst
 ********************************************************************************/
 void freeMemory(Lst* lst)
@@ -145,7 +153,7 @@ void insertOrder(Lst** lst, int data)
     if(newLst == NULL) exit(EXIT_FAILURE);      /** Retorna msg caso de falha **/
 
     Lst* aux=*lst;                           /**PERCORRER LISTA**/
-    Lst* prev = NULL;                           /**ARMAZENA LISTA ANTERIOR DA LISTA**/
+    Lst* prev = NULL;                        /**ARMAZENA ELEMENTO ANTERIOR DA LISTA**/
 
     newLst->info = data;
     while(aux != NULL && aux->info < data){
@@ -219,22 +227,18 @@ DL* searchDuoList(DL* dl, int data)
 ********************************************************************************/
 void removeDuoList(DL** dl, int data)
 {
-    DL* aux = searchDuoList(*dl, data);
-    DL* aux2 = *dl;
-    if (aux == NULL)
-        printf("\nDado não encontrado, elemento não removido.\n");
-        /* não achou o elemento: retorna lista inalterada */
-
-    /* retira elemento do encadeamento */
-    if (aux2 == aux)
-        aux2 = aux->next;
-    else
-        aux->prev->next = aux->next;
-
-    if (aux->next != NULL)
-        aux->next->prev = aux->prev;
-   // freeMemoryDuoList(aux);
-    *dl = aux2;
+   DL* aux = searchDuoList((*dl),data);
+   if (aux == NULL)
+          return;
+   /* não achou o elemento: retorna lista inalterada */
+   /* retira elemento do encadeamento */
+   if ((*dl) == aux)
+         (*dl) = aux->next;
+   else
+         aux->prev->next = aux->next;
+   if (aux->next != NULL)
+         aux->next->prev = aux->prev;
+   free(aux);
 }
 /********************************************************************************
 * @Author      : Jaicimara Weber

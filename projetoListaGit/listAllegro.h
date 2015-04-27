@@ -7,10 +7,6 @@
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>
 
-#define RET 0
-#define TRI 1
-#define CIR 2
-
 typedef struct background RGB;
 typedef struct rectangle REC;
 typedef struct circle CIRC;
@@ -25,13 +21,13 @@ struct background{
 };
 struct rectangle{
     float x1,y1,x2,y2;
-    float thicknes;
+    float thickness;
     RGB color;
 };
 
 struct circle{
     float x1,y1,raio;
-    float thicknes;
+    float thickness;
     RGB color;
 };
 

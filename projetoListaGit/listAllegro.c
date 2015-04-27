@@ -34,8 +34,8 @@ LGEN* initList (void)
 void printListGen(LGEN* lst)
 {
     LGEN* aux = lst;
-    REC *r = (REC*) aux->info;
-    CIRC *c = (CIRC*) aux->info;
+    REC *r = NULL;
+    CIRC *c = NULL;
     int i=0;
     printf("----------------------------------------------------------\n");
     while(aux != NULL){
@@ -62,7 +62,7 @@ void printListGen(LGEN* lst)
 * @Description : Adiciona a lista heterogenea o retangulo
 * @Parameters  : LGEN* lst, REC* rec
 ********************************************************************************/
-void addRec(LGEN** lst, float x1,float y1, float x2, float y2, float r,float g, float b, float thicknes)
+void addRec(LGEN** lst, float x1,float y1, float x2, float y2, float r,float g, float b, float thickness)
 {
     /**Aloca espaço do retangulo**/
     REC* newRec = (REC*) malloc(sizeof(REC));
@@ -74,7 +74,7 @@ void addRec(LGEN** lst, float x1,float y1, float x2, float y2, float r,float g, 
     newRec->color.r = r;
     newRec->color.g = g;
     newRec->color.b = b;
-    newRec->thicknes = thicknes;
+    newRec->thickness = thickness;
 
     /**Aloca espaço para lista**/
     LGEN* newList = (LGEN*) malloc(sizeof(LGEN));
@@ -88,11 +88,11 @@ void addRec(LGEN** lst, float x1,float y1, float x2, float y2, float r,float g, 
 * @Author      : Jaicimara Weber
 * @Date        : 06/04/2015
 * @Description : Adiciona a lista heterogenea o circulo
-* @Parameters  : LGEN* lst, ponto, raio, cor e tamanho da borda
+* @Parameters  : LGEN* lst, ponto, raio, cor e espessura da borda
 ********************************************************************************/
-void addCir(LGEN** lst, float x1,float y1, float raio, float r,float g, float b, float thicknes)
+void addCir(LGEN** lst, float x1,float y1, float raio, float r,float g, float b, float thickness)
 {
-    /**Aloca espaço do retangulo**/
+    /**Aloca espaço do Circulo**/
     CIRC* newCirc = (CIRC*) malloc(sizeof(CIRC));
     if(newCirc == NULL) exit(EXIT_FAILURE); /** Retorna msg caso de falha **/
     newCirc->x1 = x1;
@@ -101,7 +101,7 @@ void addCir(LGEN** lst, float x1,float y1, float raio, float r,float g, float b,
     newCirc->color.r = r;
     newCirc->color.g = g;
     newCirc->color.b = b;
-    newCirc->thicknes = thicknes;
+    newCirc->thickness = thickness;
 
     /**Aloca espaço para lista**/
     LGEN* newList = (LGEN*) malloc(sizeof(LGEN));
@@ -116,23 +116,47 @@ void addCir(LGEN** lst, float x1,float y1, float raio, float r,float g, float b,
 * @Author      : Jaicimara Weber
 * @Date        : 06/04/2015
 * @Description : Calcula area de cada elemento da lista
-* @Parameters  : LGEN* lst, ponto, raio, cor e tamanho da borda
+* @Parameters  : LGEN* lst
 ********************************************************************************/
 void calcArea(LGEN* lst)
-{
-
-}
-/********************************************************************************
-* @Author      : Jaicimara Weber
-* @Date        : 06/04/2015
-* @Description : Calcula area de cada elemento da lista
-* @Parameters  : LGEN* lst, ponto, raio, cor e tamanho da borda
-********************************************************************************/
-void desenha(LGEN* lst, char padrao)
 {
     LGEN* aux = lst;
     REC *r = (REC*) aux->info;
     CIRC *c = (CIRC*) aux->info;
+    float area;
+    int i;
+
+     while(aux != NULL){
+        i++;
+        switch(aux->tipo){
+        case ret:
+            r = aux->info;
+            area = (r->x2-r->x1)*(r->y2-r->y1);
+            printf("Area do elemento %d eh: %.02f",i,area);
+            break;
+        case cir:
+            c = aux->info;
+            area = 3.14*(c->raio*c->raio);
+            printf("Area do elemento %d eh: %.02f",i,area);
+            break;
+        default:
+            printf("\n\nERRO - Tipo não Identificado.\n\n");
+            break;
+        }
+
+    }
+}
+/********************************************************************************
+* @Author      : Jaicimara Weber
+* @Date        : 06/04/2015
+* @Description : Desenha cada elemento da lista
+* @Parameters  : LGEN* lst, char padrao
+********************************************************************************/
+void desenha(LGEN* lst, char padrao)
+{
+    LGEN* aux = lst;
+    REC *r = NULL;
+    CIRC *c = NULL;
     int i=0;
     printf("----------------------------------------------------------\n");
     while(aux != NULL){
@@ -142,9 +166,9 @@ void desenha(LGEN* lst, char padrao)
         case ret:
             r = aux->info;
             if(padrao == contornoRedondo){
-                al_draw_rectangle(r->x1, r->y1, r->x2,r->y2, al_map_rgb(r->color.r,r->color.g, r->color.b), r->thicknes);
+                al_draw_rectangle(r->x1, r->y1, r->x2,r->y2, al_map_rgb(r->color.r,r->color.g, r->color.b), r->thickness);
             }else if(padrao == contorno){
-                al_draw_rounded_rectangle(r->x1, r->y1, r->x2,r->y2,3,3, al_map_rgb(r->color.r,r->color.g, r->color.b), r->thicknes);
+                al_draw_rounded_rectangle(r->x1, r->y1, r->x2,r->y2,3,3, al_map_rgb(r->color.r,r->color.g, r->color.b), r->thickness);
             }else if(padrao == preenchimentoRedondo){
                 al_draw_filled_rounded_rectangle(r->x1, r->y1, r->x2,r->y2,3,3, al_map_rgb(r->color.r,r->color.g, r->color.b));
             }else{
@@ -154,7 +178,7 @@ void desenha(LGEN* lst, char padrao)
         case cir:
             c = aux->info;
             if(padrao == contornoRedondo || padrao == contorno){
-                al_draw_circle(c->x1, c->y1, c->raio, al_map_rgb(c->color.r,c->color.g, c->color.b), c->thicknes);
+                al_draw_circle(c->x1, c->y1, c->raio, al_map_rgb(c->color.r,c->color.g, c->color.b), c->thickness);
             }else{
                 al_draw_filled_circle(c->x1, c->y1, c->raio,al_map_rgb(c->color.r,c->color.g, c->color.b));
             }
